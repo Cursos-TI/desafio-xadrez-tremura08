@@ -1,60 +1,93 @@
 #include <stdio.h> // Inclui a biblioteca padrão de entrada e saída
 
+// --- Funções Recursivas para Movimento das Peças ---
+
+// Função recursiva para o movimento da Torre (5 casas para a direita)
+void moverTorre(int passosRestantes) {
+    if (passosRestantes > 0) {
+        printf("Direita\n");
+        moverTorre(passosRestantes - 1); // Chama a si mesma para o próximo passo
+    }
+}
+
+// Função recursiva para o movimento do Bispo (5 casas na diagonal para cima e à direita)
+// Dentro de cada passo recursivo, usaremos loops aninhados para simular a diagonal.
+void moverBispo(int passosRestantes) {
+    if (passosRestantes > 0) {
+        printf("Passo diagonal do Bispo %d:\n", 6 - passosRestantes); // Indica qual passo diagonal é
+
+        // Loop externo para o movimento vertical (Cima)
+        // Apenas uma iteração para representar um "passo para cima" para esta diagonal.
+        for (int vertical = 0; vertical < 1; vertical++) {
+            printf("  Cima\n");
+
+            // Loop interno para o movimento horizontal (Direita)
+            // Apenas uma iteração para representar um "passo para a direita" para esta diagonal.
+            for (int horizontal = 0; horizontal < 1; horizontal++) {
+                printf("  Direita\n");
+            }
+        }
+        moverBispo(passosRestantes - 1); // Chama a si mesma para o próximo passo diagonal
+    }
+}
+
+// Função recursiva para o movimento da Rainha (8 casas para a esquerda)
+void moverRainha(int passosRestantes) {
+    if (passosRestantes > 0) {
+        printf("Esquerda\n");
+        moverRainha(passosRestantes - 1); // Chama a si mesma para o próximo passo
+    }
+}
+
 int main() {
-    // --- Movimento da Torre (usando for) ---
-    // A Torre se move 5 casas para a direita.
+    // --- Movimento da Torre (usando função recursiva) ---
     printf("--- Movimento da Torre ---\n");
-    for (int i = 0; i < 5; i++) { // Loop 'for' para simular 5 movimentos
-        printf("Direita\n"); // Imprime a direção do movimento
-    }
-    printf("\n"); // Adiciona uma linha em branco para melhor legibilidade
+    moverTorre(5); // Inicia o movimento da Torre com 5 passos
+    printf("\n");
 
-    // --- Movimento do Bispo (usando while) ---
-    // O Bispo se move 5 casas na diagonal para cima e à direita.
+    // --- Movimento do Bispo (usando função recursiva com loops aninhados) ---
     printf("--- Movimento do Bispo ---\n");
-    int casas_bispo = 0; // Inicializa o contador de casas para o Bispo
-    while (casas_bispo < 5) { // Loop 'while' para simular 5 movimentos
-        printf("Cima, Direita\n"); // Imprime as direções combinadas para a diagonal
-        casas_bispo++; // Incrementa o contador de casas
-    }
-    printf("\n"); // Adiciona uma linha em branco para melhor legibilidade
+    moverBispo(5); // Inicia o movimento do Bispo com 5 passos
+    printf("\n");
 
-    // --- Movimento da Rainha (usando do-while) ---
-    // A Rainha se move 8 casas para a esquerda.
+    // --- Movimento da Rainha (usando função recursiva) ---
     printf("--- Movimento da Rainha ---\n");
-    int casas_rainha = 0; // Inicializa o contador de casas para a Rainha
-    do {
-        printf("Esquerda\n"); // Imprime a direção do movimento
-        casas_rainha++; // Incrementa o contador de casas
-    } while (casas_rainha < 8); // Loop 'do-while' para simular 8 movimentos (garante que o bloco execute pelo menos uma vez)
-    printf("\n"); // Adiciona uma linha em branco para melhor legibilidade
+    moverRainha(8); // Inicia o movimento da Rainha com 8 passos
+    printf("\n");
 
-    // --- Movimento do Cavalo (usando loops aninhados: for e while) ---
-    // O Cavalo se move em 'L'. Vamos simular um movimento de 2 casas para baixo e 1 casa para a esquerda.
-    // Para simplificar a visualização do movimento em 'L', vamos "quebrar" a movimentação em duas partes,
-    // que juntas formam o 'L'.
-
+    // --- Movimento do Cavalo (usando loops aninhados com múltiplas variáveis/condições, continue e break) ---
+    // O Cavalo se move em 'L' (1 vez em L para cima à direita).
+    // Para simplificar a visualização, vamos simular o "L" como:
+    // 1. Duas casas para cima
+    // 2. Uma casa para a direita
     printf("--- Movimento do Cavalo ---\n");
 
-    // Loop externo 'for': Simula o movimento vertical (para baixo) do 'L'
-    // Vamos simular 2 "L's" completos para baixo e para a esquerda
-    for (int l_move = 0; l_move < 2; l_move++) { // Loop para simular dois movimentos completos em 'L'
-        printf("Movimento L %d:\n", l_move + 1);
+    int movimentosL = 1; // Queremos simular apenas um movimento 'L' completo
+    for (int l_count = 0; l_count < movimentosL; l_count++) {
+        printf("Movimento L %d:\n", l_count + 1);
 
-        // Primeira parte do 'L': 2 casas para baixo
-        int casas_para_baixo = 0; // Contador para o movimento vertical
-        while (casas_para_baixo < 2) { // Loop 'while' para mover 2 casas para baixo
-            printf("  Baixo\n"); // Imprime a direção
-            casas_para_baixo++; // Incrementa o contador
+        // Primeira parte do 'L': 2 casas para cima
+        int casasVerticais = 0;
+        int maxCasasVerticais = 2; // Queremos mover 2 casas para cima
+        while (casasVerticais < maxCasasVerticais && maxCasasVerticais > 0) {
+            printf("  Cima\n");
+            casasVerticais++;
+            if (casasVerticais == 1) {
+                printf("  (Metade do movimento vertical)\n"); // Exemplo de continue
+                continue; // Continua para a próxima iteração do while
+            }
         }
 
-        // Segunda parte do 'L': 1 casa para a esquerda
-        // Este é um movimento fixo de 1 casa, mas para fins de aninhamento e demonstração,
-        // podemos imaginar um loop simples, ou apenas uma instrução.
-        // Se quisermos um loop aninhado aqui para cada 'L' simulado, podemos fazer:
-        printf("  Esquerda\n"); // Imprime a direção
-
-        printf("\n"); // Adiciona uma linha em branco para separar os movimentos 'L'
+        // Segunda parte do 'L': 1 casa para a direita
+        int casasHorizontais = 0;
+        for (; casasHorizontais < 1; casasHorizontais++) { // Loop for com inicialização omitida
+            printf("  Direita\n");
+            if (casasHorizontais == 0) {
+                printf("  (Movimento horizontal)\n");
+                break; // Sai do loop for após o primeiro movimento horizontal
+            }
+        }
+        printf("\n");
     }
 
     return 0; // Indica que o programa foi executado com sucesso
